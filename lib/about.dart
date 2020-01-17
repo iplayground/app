@@ -267,7 +267,9 @@ class _AboutSectionTitle extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(text, style: Theme.of(context).textTheme.display1),
+          Text(text,
+              style:
+                  CupertinoTheme.of(context).textTheme.navLargeTitleTextStyle),
           Divider(color: Colors.grey),
         ],
       ),
@@ -330,7 +332,8 @@ class _SponsorTitle extends StatelessWidget {
       width: double.infinity,
       child: Padding(
           padding: const EdgeInsets.only(left: 20, right: 20),
-          child: Text(text, style: Theme.of(context).textTheme.title)),
+          child: Text(text,
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold))),
     ));
   }
 }

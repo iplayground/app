@@ -69,7 +69,9 @@ class _FavoritePageState extends State<FavoritePage> {
                       child: Center(
                           child: Text(
                     '您還沒有任何最愛的議程',
-                    style: Theme.of(context).textTheme.title,
+                    style: CupertinoTheme.of(context)
+                        .textTheme
+                        .navLargeTitleTextStyle,
                   )));
                 }
                 final all = dataState.sessions;
@@ -123,10 +125,8 @@ class _FavoritePageState extends State<FavoritePage> {
       navigationBar: CupertinoNavigationBar(
         middle: Text('我的最愛'),
       ),
-      child: Scaffold(
-        body: Scrollbar(
-          child: content,
-        ),
+      child: CupertinoPageScaffold(
+        child: Scrollbar(child: content),
       ),
     );
   }

@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'package:iplayground19/api/api.dart';
 
 class RoomLabel extends StatelessWidget {
@@ -33,10 +32,7 @@ class RoomLabel extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(3.0),
           child: Text(session.roomName,
-              style: Theme.of(context).textTheme.caption.copyWith(
-                    color: color,
-                    fontWeight: FontWeight.bold,
-                  )),
+              style: TextStyle(color: color, fontSize: 12)),
         ));
   }
 }

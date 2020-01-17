@@ -146,7 +146,10 @@ class _SessionPageState extends State<SessionPage> {
         child: OurMarkdown(
           data: text.trim(),
           styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context)).copyWith(
-              p: Theme.of(context).textTheme.body1.copyWith(fontSize: 17)),
+              p: CupertinoTheme.of(context)
+                  .textTheme
+                  .textStyle
+                  .copyWith(fontSize: 17)),
           onTapLink: (link) => launch(
             link,
             forceSafariVC: false,
@@ -175,9 +178,7 @@ class _SessionPageState extends State<SessionPage> {
               height: 200,
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
-                child: ClipOval(
-                  child: Image.asset(imageName),
-                ),
+                child: ClipOval(child: Image.asset(imageName)),
               ),
             ));
         widgets.add(image);
@@ -189,7 +190,10 @@ class _SessionPageState extends State<SessionPage> {
             padding: const EdgeInsets.all(20),
             child: Text(
               speaker.name,
-              style: Theme.of(context).textTheme.title,
+              style: CupertinoTheme.of(context)
+                  .textTheme
+                  .textStyle
+                  .copyWith(fontSize: 24),
             ),
           ),
           Padding(
@@ -198,9 +202,9 @@ class _SessionPageState extends State<SessionPage> {
               data: speaker.biography.trim(),
               styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context))
                   .copyWith(
-                      p: Theme.of(context)
+                      p: CupertinoTheme.of(context)
                           .textTheme
-                          .body1
+                          .textStyle
                           .copyWith(fontSize: 17)),
               onTapLink: (link) => launch(link),
             ),
@@ -217,7 +221,8 @@ class _SessionPageState extends State<SessionPage> {
             Flexible(
               child: FlatButton(
                   child: Text(twitter,
-                      style: TextStyle(color: Theme.of(context).primaryColor)),
+                      style: TextStyle(
+                          color: CupertinoTheme.of(context).primaryColor)),
                   onPressed: () => launch(
                         twitter,
                         forceSafariVC: false,
@@ -250,10 +255,8 @@ class _SessionPageState extends State<SessionPage> {
 
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(),
-      child: Scaffold(
-        body: Scrollbar(
-          child: body,
-        ),
+      child: CupertinoPageScaffold(
+        child: Scrollbar(child: body),
       ),
     );
   }

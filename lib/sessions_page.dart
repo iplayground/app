@@ -28,7 +28,7 @@ class _SessionsPageState extends State<SessionsPage> {
         if (state is DataBlocLoadingState) {
           return CupertinoPageScaffold(
             navigationBar: CupertinoNavigationBar(),
-            child: SafeArea(
+            child: CupertinoPageScaffold(
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -111,8 +111,8 @@ class _SessionsPageState extends State<SessionsPage> {
             SliverToBoxAdapter(
                 child: SizedBox(height: MediaQuery.of(context).padding.bottom)),
           ]);
-          return Scaffold(
-            body: Scrollbar(
+          return CupertinoPageScaffold(
+            child: Scrollbar(
               child: CustomScrollView(
                 slivers: widgets,
                 controller: widget.scrollController,
@@ -152,7 +152,10 @@ class TimeSectionLabel extends StatelessWidget {
                 width: double.infinity,
                 child: Text(
                   section.title,
-                  style: Theme.of(context).textTheme.display1,
+                  style: CupertinoTheme.of(context)
+                      .textTheme
+                      .navLargeTitleTextStyle
+                      .copyWith(fontSize: 26),
                 )),
           ),
         ),

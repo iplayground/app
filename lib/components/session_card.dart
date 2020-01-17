@@ -68,7 +68,8 @@ class SessionCard extends StatelessWidget {
                       RoomLabel(session: session),
                       SizedBox(height: 10),
                       Text(session.title,
-                          style: Theme.of(context).textTheme.title),
+                          style: TextStyle(
+                              fontSize: 25.0, fontWeight: FontWeight.bold)),
                       SizedBox(height: 5),
                       Text(session.presenter, style: TextStyle(fontSize: 17.0)),
                       SizedBox(height: 20),
