@@ -3,7 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:iplayground19/bloc/notification.dart';
 import 'package:matcher/matcher.dart';
 
-main() {
+void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   List<MethodCall> log = [];
   setUp(() {
     log = [];
@@ -23,7 +25,7 @@ main() {
     NotificationBloc bloc = NotificationBloc(dataBloc: null);
     bloc.add(NotificationBlocLoadEvent());
     expectLater(
-        bloc.state,
+        bloc.asBroadcastStream(),
         emitsInOrder([
           TypeMatcher<NotificationBlocInitialState>(),
           TypeMatcher<NotificationBlocLoadedState>(),
