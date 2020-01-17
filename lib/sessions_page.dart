@@ -28,8 +28,8 @@ class _SessionsPageState extends State<SessionsPage> {
         if (state is DataBlocLoadingState) {
           return CupertinoPageScaffold(
             navigationBar: CupertinoNavigationBar(),
-            child: CupertinoPageScaffold(
-              child: Center(
+            child: Scaffold(
+              body: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -111,8 +111,8 @@ class _SessionsPageState extends State<SessionsPage> {
             SliverToBoxAdapter(
                 child: SizedBox(height: MediaQuery.of(context).padding.bottom)),
           ]);
-          return CupertinoPageScaffold(
-            child: Scrollbar(
+          return Scaffold(
+            body: Scrollbar(
               child: CustomScrollView(
                 slivers: widgets,
                 controller: widget.scrollController,

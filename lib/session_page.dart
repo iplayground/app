@@ -255,8 +255,8 @@ class _SessionPageState extends State<SessionPage> {
 
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(),
-      child: CupertinoPageScaffold(
-        child: Scrollbar(child: body),
+      child: Scaffold(
+        body: Scrollbar(child: body),
       ),
     );
   }

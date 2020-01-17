@@ -125,8 +125,8 @@ class _FavoritePageState extends State<FavoritePage> {
       navigationBar: CupertinoNavigationBar(
         middle: Text('我的最愛'),
       ),
-      child: CupertinoPageScaffold(
-        child: Scrollbar(child: content),
+      child: Scaffold(
+        body: Scrollbar(child: content),
       ),
     );
   }
