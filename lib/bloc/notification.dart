@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:iplayground19/api/api.dart';
 import 'package:iplayground19/bloc/data_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 class NotificationBlocEvent {}
 
@@ -57,8 +57,8 @@ class NotificationBloc
     if (dataBloc == null) {
       return;
     }
-    final dataState = dataBloc.currentState;
-    final notificationState = this.currentState;
+    final dataState = dataBloc.state;
+    final notificationState = this.state;
     if (dataState is DataBlocLoadedState &&
         notificationState is NotificationBlocLoadedState) {
       if (helper == null) {
@@ -77,17 +77,17 @@ class NotificationBloc
   }
 
   Future<void> _saveSessions() async {
-    final state = this.currentState;
-    if (state is NotificationBlocLoadedState) {
+    final currentState = this.state;
+    if (currentState is NotificationBlocLoadedState) {
       final instance = await SharedPreferences.getInstance();
-      instance.setStringList("notifications", state.sessions);
+      instance.setStringList("notifications", currentState.sessions);
     }
   }
 
   Future<List<String>> _getSessions() async {
-    final state = currentState;
-    return state is NotificationBlocLoadedState
-        ? state.sessions
+    final currentState = state;
+    return currentState is NotificationBlocLoadedState
+        ? currentState.sessions
         : await _loadSessions();
   }
 

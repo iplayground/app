@@ -24,13 +24,13 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     dataBloc = DataBloc();
     notificationBloc = NotificationBloc(dataBloc: dataBloc);
-    notificationBloc.dispatch(NotificationBlocLoadEvent());
+    notificationBloc.add(NotificationBlocLoadEvent());
   }
 
   @override
   void dispose() {
-    dataBloc.dispose();
-    notificationBloc.dispose();
+    dataBloc.close();
+    notificationBloc.close();
     super.dispose();
   }
 
@@ -38,8 +38,8 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<DataBloc>(builder: (context) => dataBloc),
-        BlocProvider<NotificationBloc>(builder: (context) => notificationBloc),
+        BlocProvider<DataBloc>(create: (context) => dataBloc),
+        BlocProvider<NotificationBloc>(create: (context) => notificationBloc),
       ],
       child: CupertinoApp(
         title: 'iPlayground 19',

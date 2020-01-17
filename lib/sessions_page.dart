@@ -21,6 +21,7 @@ class SessionsPage extends StatefulWidget {
 class _SessionsPageState extends State<SessionsPage> {
   @override
   Widget build(BuildContext context) {
+    // ignore: close_sinks
     final DataBloc bloc = BlocProvider.of(context);
     return BlocBuilder<DataBloc, DataBlocState>(
       bloc: bloc,
@@ -55,7 +56,7 @@ class _SessionsPageState extends State<SessionsPage> {
                     CupertinoButton(
                       child: Text('重試'),
                       onPressed: () {
-                        bloc.dispatch(DataBlocEvent.load);
+                        bloc.add(DataBlocEvent.load);
                       },
                     ),
                   ],
@@ -104,7 +105,7 @@ class _SessionsPageState extends State<SessionsPage> {
             CupertinoSliverRefreshControl(
               refreshTriggerPullDistance: 180,
               onRefresh: () => Future.delayed(Duration(seconds: 0),
-                  () => bloc.dispatch(DataBlocEvent.refresh)),
+                  () => bloc.add(DataBlocEvent.refresh)),
             ),
             list,
             SliverToBoxAdapter(child: SizedBox(height: 30)),
@@ -121,7 +122,7 @@ class _SessionsPageState extends State<SessionsPage> {
           );
         }
         if (state is DataBlocInitialState) {
-          bloc.dispatch(DataBlocEvent.load);
+          bloc.add(DataBlocEvent.load);
         }
         return Container();
       },

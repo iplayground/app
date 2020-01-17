@@ -109,6 +109,7 @@ class DataBloc extends Bloc<DataBlocEvent, DataBlocState> {
 
   @override
   Stream<DataBlocState> mapEventToState(DataBlocEvent event) async* {
+    var currentState = state;
     if (currentState is DataBlocLoadingState) {
       return;
     }

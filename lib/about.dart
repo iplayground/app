@@ -59,6 +59,7 @@ class _AboutPageState extends State<AboutPage> {
 
     // --
 
+    // ignore: close_sinks
     DataBloc bloc = BlocProvider.of(context);
     return CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(middle: Text('關於')),

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,7 +20,7 @@ class OurMarkdown extends MarkdownWidget {
     MarkdownStyleSheet styleSheet,
     SyntaxHighlighter syntaxHighlighter,
     MarkdownTapLinkCallback onTapLink,
-    Directory imageDirectory,
+    String imageDirectory,
     this.padding: const EdgeInsets.all(16),
   }) : super(
           key: key,
@@ -68,6 +66,7 @@ class _SessionPageState extends State<SessionPage> {
     for (final link in links) {
       text = text.replaceAll(link, '[$link]($link)');
     }
+    // ignore: close_sinks
     NotificationBloc bloc = BlocProvider.of(context);
 
     var widgets = <Widget>[

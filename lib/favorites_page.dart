@@ -18,7 +18,9 @@ class FavoritePage extends StatefulWidget {
 class _FavoritePageState extends State<FavoritePage> {
   @override
   Widget build(BuildContext context) {
+    // ignore: close_sinks
     DataBloc dataBloc = BlocProvider.of(context);
+    // ignore: close_sinks
     NotificationBloc notificationBloc = BlocProvider.of(context);
 
     var content = BlocBuilder<DataBloc, DataBlocState>(
@@ -49,7 +51,7 @@ class _FavoritePageState extends State<FavoritePage> {
                   CupertinoButton(
                     child: Text('重試'),
                     onPressed: () {
-                      dataBloc.dispatch(DataBlocEvent.load);
+                      dataBloc.add(DataBlocEvent.load);
                     },
                   ),
                 ],

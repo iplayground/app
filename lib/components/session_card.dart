@@ -44,6 +44,7 @@ class SessionCard extends StatelessWidget {
       );
 
   Widget _buildInner(BuildContext context) {
+    // ignore: close_sinks
     NotificationBloc bloc = BlocProvider.of(context);
     return Material(
       child: InkWell(

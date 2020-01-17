@@ -19,8 +19,9 @@ main() {
   });
 
   test("test notification bloc", () async {
+    // ignore: close_sinks
     NotificationBloc bloc = NotificationBloc(dataBloc: null);
-    bloc.dispatch(NotificationBlocLoadEvent());
+    bloc.add(NotificationBlocLoadEvent());
     expectLater(
         bloc.state,
         emitsInOrder([
@@ -31,11 +32,11 @@ main() {
 
   test("test notification bloc", () async {
     NotificationBloc bloc = NotificationBloc(dataBloc: null);
-    bloc.dispatch(NotificationBlocLoadEvent());
-    bloc.dispatch(NotificationBlocAddEvent('123'));
-    bloc.dispatch(NotificationBlocRemoveEvent('123'));
+    bloc.add(NotificationBlocLoadEvent());
+    bloc.add(NotificationBlocAddEvent('123'));
+    bloc.add(NotificationBlocRemoveEvent('123'));
     await expectLater(
-        bloc.state,
+        bloc.asBroadcastStream(),
         emitsInOrder([
           TypeMatcher<NotificationBlocInitialState>(),
           TypeMatcher<NotificationBlocLoadedState>(),
@@ -44,5 +45,6 @@ main() {
         ]));
     expect(log[0].arguments['value'][0] == '123', isTrue);
     expect(log[1].arguments['value'].isEmpty, isTrue);
+    bloc.close();
   });
 }
