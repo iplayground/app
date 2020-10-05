@@ -7,7 +7,7 @@
 
     <application
         android:icon="@mipmap/ic_launcher"
-        android:label="iplayground19">
+        android:label="iplayground20">
         <!-- Specify that the launch screen should continue being displayed -->
         <!-- until Flutter renders its first frame. -->
         <meta-data
