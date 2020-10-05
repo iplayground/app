@@ -206,31 +206,35 @@ class _AboutPageState extends State<AboutPage> {
         delegate: SliverChildBuilderDelegate((context, index) {
           final item = state.staffs[index];
           return LayoutBuilder(builder: (context, constraints) {
-            return GestureDetector(
-              onTap: () {
-                if (item.linkUrl != null) {
-                  launch(item.linkUrl, forceSafariVC: false);
-                }
-              },
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  ClipOval(
-                      child: CachedNetworkImage(
-                    cacheManager: new MyCacheManager(),
-                    placeholder: (context, url) => CircularProgressIndicator(),
-                    imageUrl: item.imageUrl ?? "",
-                    errorWidget: (context, url, error) =>
-                        Image(image: AssetImage("images/nopic.png")),
-                  )),
-                  SizedBox(height: 4),
-                  Text(item.name, style: TextStyle(fontSize: 22.0)),
-                  SizedBox(height: 4),
-                  Text(
-                    item.description,
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+            return Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  if (item.linkUrl != null) {
+                    launch(item.linkUrl, forceSafariVC: false);
+                  }
+                },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    ClipOval(
+                        child: CachedNetworkImage(
+                      cacheManager: new MyCacheManager(),
+                      placeholder: (context, url) =>
+                          CircularProgressIndicator(),
+                      imageUrl: item.imageUrl ?? "",
+                      errorWidget: (context, url, error) =>
+                          Image(image: AssetImage("images/nopic.png")),
+                    )),
+                    SizedBox(height: 4),
+                    Text(item.name, style: TextStyle(fontSize: 22.0)),
+                    SizedBox(height: 4),
+                    Text(
+                      item.description,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
               ),
             );
           });
