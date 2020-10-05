@@ -43,10 +43,7 @@ class NotificationBloc
   DataBloc dataBloc;
   NotificationHelper helper;
 
-  NotificationBloc({this.dataBloc});
-
-  @override
-  NotificationBlocState get initialState => NotificationBlocInitialState();
+  NotificationBloc({this.dataBloc}) : super(NotificationBlocInitialState());
 
   Future<List<String>> _loadSessions() async {
     final instance = await SharedPreferences.getInstance();
@@ -132,8 +129,11 @@ class NotificationHelper {
             (int id, String title, String body, String payload) {
       return null;
     });
+    var initializationSettingsMacOS = new MacOSInitializationSettings();
     var initializationSettings = new InitializationSettings(
-        initializationSettingsAndroid, initializationSettingsIOS);
+        android: initializationSettingsAndroid,
+        iOS: initializationSettingsIOS,
+        macOS: initializationSettingsMacOS);
     flutterLocalNotificationsPlugin.initialize(initializationSettings,
         onSelectNotification: (payload) {
       return null;
@@ -170,8 +170,11 @@ class NotificationHelper {
       'Notifications from iPlayground',
     );
     var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
+    var macPlatformChannelSpecifics = new MacOSNotificationDetails();
     NotificationDetails platformChannelSpecifics = new NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+        android: androidPlatformChannelSpecifics,
+        iOS: iOSPlatformChannelSpecifics,
+        macOS: macPlatformChannelSpecifics);
 
     var title = session.title;
     var body = "議程將在 ${session.startTime} 於 ${session.roomName} 開始";

@@ -104,8 +104,7 @@ class Section {
 class DataBloc extends Bloc<DataBlocEvent, DataBlocState> {
   CacheRepository cacheRepo = CacheRepository();
 
-  @override
-  DataBlocState get initialState => DataBlocInitialState();
+  DataBloc() : super(DataBlocInitialState());
 
   @override
   Stream<DataBlocState> mapEventToState(DataBlocEvent event) async* {

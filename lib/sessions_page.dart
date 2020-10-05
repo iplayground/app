@@ -24,7 +24,7 @@ class _SessionsPageState extends State<SessionsPage> {
     // ignore: close_sinks
     final DataBloc bloc = BlocProvider.of(context);
     return BlocBuilder<DataBloc, DataBlocState>(
-      bloc: bloc,
+      cubit: bloc,
       builder: (context, state) {
         if (state is DataBlocLoadingState) {
           return CupertinoPageScaffold(

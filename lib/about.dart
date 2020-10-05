@@ -66,7 +66,7 @@ class _AboutPageState extends State<AboutPage> {
         child: Scrollbar(
           child: Center(
               child: BlocBuilder<DataBloc, DataBlocState>(
-            bloc: bloc,
+            cubit: bloc,
             builder: (context, state) {
               var slivers = <Widget>[];
               slivers.add(SliverToBoxAdapter(

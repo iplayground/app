@@ -17,7 +17,7 @@ class FavoriteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<NotificationBloc, NotificationBlocState>(
-        bloc: bloc,
+        cubit: bloc,
         builder: (context, state) {
           if (state is NotificationBlocLoadedState) {
             if (state.has("${session.sessionId}")) {

@@ -24,7 +24,7 @@ class _FavoritePageState extends State<FavoritePage> {
     NotificationBloc notificationBloc = BlocProvider.of(context);
 
     var content = BlocBuilder<DataBloc, DataBlocState>(
-      bloc: dataBloc,
+      cubit: dataBloc,
       builder: (context, dataState) {
         if (dataState is DataBlocLoadingState) {
           return SafeArea(
@@ -62,7 +62,7 @@ class _FavoritePageState extends State<FavoritePage> {
 
         if (dataState is DataBlocLoadedState) {
           return BlocBuilder<NotificationBloc, NotificationBlocState>(
-            bloc: notificationBloc,
+            cubit: notificationBloc,
             builder: (context, notificationState) {
               if (notificationState is NotificationBlocLoadedState) {
                 final saved = notificationState.sessions;
