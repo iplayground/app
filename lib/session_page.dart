@@ -1,6 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:html2md/html2md.dart' as html2md;
@@ -169,19 +169,24 @@ class _SessionPageState extends State<SessionPage> {
           padding: const EdgeInsets.only(left: 20, right: 20),
           child: Divider(color: Colors.grey)));
 
-      if (imageName != null) {
-        final image = Align(
-            alignment: Alignment.centerLeft,
-            child: Container(
-              width: 200,
-              height: 200,
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: ClipOval(child: Image.asset(imageName)),
-              ),
-            ));
-        widgets.add(image);
-      }
+      final image = Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          width: 200,
+          height: 200,
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: ClipOval(
+                child: CachedNetworkImage(
+              placeholder: (context, url) => CircularProgressIndicator(),
+              imageUrl: widget.program.videoUrl ?? "",
+              errorWidget: (context, url, error) =>
+                  Image(image: AssetImage("images/nopic.png")),
+            )),
+          ),
+        ),
+      );
+      widgets.add(image);
 
       for (final speaker in widget.program.speakers) {
         widgets.addAll([
@@ -260,28 +265,8 @@ class _SessionPageState extends State<SessionPage> {
     );
   }
 
-  String imageName;
-
-  detectHasImage() async {
-    var name = 'images/a_' +
-        widget.session.presenter
-            .replaceAll(' ', '_')
-            .replaceAll('-', '_')
-            .replaceAll(',', '')
-            .toLowerCase() +
-        '.png';
-    try {
-      await rootBundle.load(name);
-      setState(() => imageName = name);
-    } catch (e) {
-      print(e);
-      return;
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(milliseconds: 250), () => detectHasImage());
   }
 }
