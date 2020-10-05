@@ -7,6 +7,8 @@ import 'package:iplayground19/api/src/sponsor.dart';
 import 'package:iplayground19/bloc/data_bloc.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'MyCacheManager.dart';
+
 center(Widget child) => Center(
         child: ConstrainedBox(
       constraints: BoxConstraints(maxWidth: 680),
@@ -209,6 +211,7 @@ class _AboutPageState extends State<AboutPage> {
               children: <Widget>[
                 ClipOval(
                     child: CachedNetworkImage(
+                  cacheManager: new MyCacheManager(),
                   placeholder: (context, url) => CircularProgressIndicator(),
                   imageUrl: item.imageUrl ?? "",
                   errorWidget: (context, url, error) =>

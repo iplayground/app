@@ -10,6 +10,8 @@ import 'package:iplayground19/components/favorite_Button.dart';
 import 'package:iplayground19/components/room_label.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'MyCacheManager.dart';
+
 class OurMarkdown extends MarkdownWidget {
   final EdgeInsets padding;
 
@@ -178,6 +180,7 @@ class _SessionPageState extends State<SessionPage> {
             padding: const EdgeInsets.all(20.0),
             child: ClipOval(
                 child: CachedNetworkImage(
+              cacheManager: new MyCacheManager(),
               placeholder: (context, url) => CircularProgressIndicator(),
               imageUrl: widget.program.videoUrl ?? "",
               errorWidget: (context, url, error) =>
