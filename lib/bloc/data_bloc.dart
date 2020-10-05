@@ -12,12 +12,11 @@ class Cache {
   List<Session> sessions;
   List<Staff> staffs;
 
-  Cache({
-    @required this.sponsors,
-    @required this.programs,
-    @required this.sessions,
-    @required this.staffs
-  });
+  Cache(
+      {@required this.sponsors,
+      @required this.programs,
+      @required this.sessions,
+      @required this.staffs});
 }
 
 class CacheRepository {
@@ -51,13 +50,15 @@ class CacheRepository {
       return List<Staff>.from(staffsMapList.map((x) => Staff(x)));
     }();
 
-    if (sponsors != null && programs != null && sessions != null && staffs != null) {
+    if (sponsors != null &&
+        programs != null &&
+        sessions != null &&
+        staffs != null) {
       return Cache(
-        sponsors: sponsors,
-        programs: programs,
-        sessions: sessions,
-        staffs: staffs
-      );
+          sponsors: sponsors,
+          programs: programs,
+          sessions: sessions,
+          staffs: staffs);
     }
     return null;
   }
@@ -139,11 +140,12 @@ class DataBloc extends Bloc<DataBlocEvent, DataBlocState> {
           final sponsors = cache.sponsors;
           final programs = cache.programs;
           final sessions = cache.sessions;
+          final staffs = cache.staffs;
           yield generateState(
-            sessions: sessions,
-            programs: programs,
-            sponsors: sponsors,
-          );
+              sessions: sessions,
+              programs: programs,
+              sponsors: sponsors,
+              staffs: staffs);
           return;
         }
       }
@@ -159,8 +161,11 @@ class DataBloc extends Bloc<DataBlocEvent, DataBlocState> {
           programs: programs,
           sponsors: sponsors,
           staffs: staffs);
-      cacheRepo.save(
-          Cache(sponsors: sponsors, programs: programs, sessions: sessions, staffs: staffs));
+      cacheRepo.save(Cache(
+          sponsors: sponsors,
+          programs: programs,
+          sessions: sessions,
+          staffs: staffs));
     } catch (e) {
       print(e);
       if (currentState is DataBlocLoadedState) {

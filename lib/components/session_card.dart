@@ -81,7 +81,7 @@ class SessionCard extends StatelessWidget {
                           ? Text('開始時間 ' + session.startTime)
                           : Container(),
                       Text('結束時間 ' + session.endTime,
-                          style: Theme.of(context).textTheme.body1),
+                          style: Theme.of(context).textTheme.bodyText1),
                     ],
                   ),
                 ),

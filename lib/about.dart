@@ -144,7 +144,7 @@ class _AboutPageState extends State<AboutPage> {
                   image: DecorationImage(image: NetworkImage(item.iconUrl))),
             );
           });
-        }, childCount: data.length),
+        }, childCount: (data != null) ? data.length : 0),
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 200.0,
           crossAxisSpacing: 10.0,
@@ -227,7 +227,7 @@ class _AboutPageState extends State<AboutPage> {
               ],
             );
           });
-        }, childCount: state.staffs.length),
+        }, childCount: (state.staffs != null) ? state.staffs.length : 0),
         gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: 200.0,
             childAspectRatio: 0.5,
@@ -314,7 +314,7 @@ class _SponsorGrid extends StatelessWidget {
             ],
           ),
         );
-      }, childCount: sponsors.length),
+      }, childCount: (sponsors != null) ? sponsors.length : 0),
       gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
         maxCrossAxisExtent: 200.0,
         crossAxisSpacing: 10.0,
