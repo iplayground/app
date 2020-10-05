@@ -62,9 +62,9 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<GlobalKey<NavigatorState>> keys =
-      List.generate(5, (_) => GlobalKey());
+      List.generate(4, (_) => GlobalKey());
   final List<ScrollController> scrollControllers =
-      List.generate(5, (_) => ScrollController());
+      List.generate(4, (_) => ScrollController());
   int currentIndex = 0;
 
   @override
@@ -80,19 +80,15 @@ class _MyHomePageState extends State<MyHomePage> {
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.schedule, size: 24),
-              title: Text("第 1 天"),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.schedule, size: 24),
-              title: Text("第 2 天"),
+              label: "議程",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.favorite, size: 24),
-              title: Text("我的最愛"),
+              label: "我的最愛",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.info, size: 24),
-              title: Text("關於"),
+              label: "關於",
             ),
           ],
           onTap: (index) {
@@ -126,27 +122,21 @@ class _MyHomePageState extends State<MyHomePage> {
             case 1:
               return CupertinoTabView(
                 navigatorKey: keys[1],
-                builder: (context) => SessionsPage(
-                    day: 2, scrollController: scrollControllers[1]),
+                builder: (context) => FavoritePage(
+                  scrollController: scrollControllers[1],
+                ),
               );
             case 2:
               return CupertinoTabView(
                 navigatorKey: keys[2],
-                builder: (context) => FavoritePage(
-                  scrollController: scrollControllers[2],
-                ),
-              );
-            case 3:
-              return CupertinoTabView(
-                navigatorKey: keys[3],
                 builder: (context) => AboutPage(
-                  scrollController: scrollControllers[3],
+                  scrollController: scrollControllers[2],
                 ),
               );
 
             default:
               return CupertinoTabView(
-                  navigatorKey: keys[4],
+                  navigatorKey: keys[3],
                   builder: (context) =>
                       CupertinoPageScaffold(child: Container()));
           }

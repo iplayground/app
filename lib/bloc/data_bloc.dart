@@ -3,17 +3,20 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:iplayground19/api/api.dart';
+import 'package:iplayground19/api/src/staff.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Cache {
   Sponsors sponsors;
   List<Program> programs;
   List<Session> sessions;
+  List<Staff> staffs;
 
   Cache({
     @required this.sponsors,
     @required this.programs,
     @required this.sessions,
+    @required this.staffs
   });
 }
 
@@ -21,31 +24,39 @@ class CacheRepository {
   Future<Cache> load() async {
     final instance = await SharedPreferences.getInstance();
     Sponsors sponsors = () {
-      final sponsorsJson = instance.getString('sponsors_v2');
+      final sponsorsJson = instance.getString('sponsors_2020_v1');
       if (sponsorsJson == null) return null;
       final Map sponsorsMap = json.decode(sponsorsJson);
       return Sponsors(sponsorsMap);
     }();
 
     List<Program> programs = () {
-      final programsJson = instance.getString('programs_v2');
+      final programsJson = instance.getString('programs_2020_v1');
       if (programsJson == null) return null;
       final List programMapList = json.decode(programsJson);
       return List<Program>.from(programMapList.map((x) => Program(x)));
     }();
 
     List<Session> sessions = () {
-      final sessionsJson = instance.getString('sessions_v2');
+      final sessionsJson = instance.getString('sessions_2020_v1');
       if (sessionsJson == null) return null;
       final List sessionsMapList = json.decode(sessionsJson);
       return List<Session>.from(sessionsMapList.map((x) => Session(x)));
     }();
 
-    if (sponsors != null && programs != null && sessions != null) {
+    List<Staff> staffs = () {
+      final staffsJson = instance.getString('staffs_2020_v1');
+      if (staffsJson == null) return null;
+      final List staffsMapList = json.decode(staffsJson);
+      return List<Staff>.from(staffsMapList.map((x) => Staff(x)));
+    }();
+
+    if (sponsors != null && programs != null && sessions != null && staffs != null) {
       return Cache(
         sponsors: sponsors,
         programs: programs,
         sessions: sessions,
+        staffs: staffs
       );
     }
     return null;
@@ -53,11 +64,13 @@ class CacheRepository {
 
   save(Cache cache) async {
     final instance = await SharedPreferences.getInstance();
-    instance.setString('sponsors_v2', json.encode(cache.sponsors));
-    instance.setString('programs_v2',
+    instance.setString('sponsors_2020_v1', json.encode(cache.sponsors));
+    instance.setString('programs_2020_v1',
         json.encode(cache.programs.map((x) => x.toJson()).toList()));
-    instance.setString('sessions_v2',
+    instance.setString('sessions_2020_v1',
         json.encode(cache.sessions.map((x) => x.toJson()).toList()));
+    instance.setString('staffs_2020_v1',
+        json.encode(cache.staffs.map((x) => x.toJson()).toList()));
   }
 }
 
@@ -73,6 +86,7 @@ class DataBlocLoadedState extends DataBlocState {
   Sponsors sponsors;
   Map<String, Session> sessions;
   Map<String, Program> programs;
+  List<Staff> staffs;
   List<Section> day1;
   List<Section> day2;
 
@@ -80,6 +94,7 @@ class DataBlocLoadedState extends DataBlocState {
     @required this.sponsors,
     @required this.sessions,
     @required this.programs,
+    @required this.staffs,
     @required this.day1,
     @required this.day2,
   });
@@ -136,15 +151,16 @@ class DataBloc extends Bloc<DataBlocEvent, DataBlocState> {
       yield DataBlocLoadingState();
 
       final sponsors = await fetchSponsors();
+      final staffs = await fetchStaffs();
       final programs = await fetchPrograms();
       final sessions = await fetchSessions();
       yield generateState(
-        sessions: sessions,
-        programs: programs,
-        sponsors: sponsors,
-      );
+          sessions: sessions,
+          programs: programs,
+          sponsors: sponsors,
+          staffs: staffs);
       cacheRepo.save(
-          Cache(sponsors: sponsors, programs: programs, sessions: sessions));
+          Cache(sponsors: sponsors, programs: programs, sessions: sessions, staffs: staffs));
     } catch (e) {
       print(e);
       if (currentState is DataBlocLoadedState) {
@@ -155,17 +171,20 @@ class DataBloc extends Bloc<DataBlocEvent, DataBlocState> {
   }
 
   DataBlocLoadedState generateState(
-      {List<Session> sessions, List<Program> programs, Sponsors sponsors}) {
+      {List<Session> sessions,
+      List<Program> programs,
+      Sponsors sponsors,
+      List<Staff> staffs}) {
     Map<String, Session> sessionMap = reshapeSessions(sessions);
     Map<String, Program> programMap = reshapePrograms(programs);
     List<List<Section>> days = reshapeSessionsToDays(sessions);
     return DataBlocLoadedState(
-      day1: days[0],
-      day2: days[1],
-      sponsors: sponsors,
-      programs: programMap,
-      sessions: sessionMap,
-    );
+        day1: days[0],
+        day2: days[1],
+        sponsors: sponsors,
+        programs: programMap,
+        sessions: sessionMap,
+        staffs: staffs);
   }
 
   List<Section> convert(Map<String, List<Session>> dayMap) {

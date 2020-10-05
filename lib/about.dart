@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -55,7 +56,6 @@ class _AboutPageState extends State<AboutPage> {
         padding: const EdgeInsets.only(left: 20, right: 20),
         sliver: SliverToBoxAdapter(
             child: center(_AboutSectionTitle(text: 'Staffs 工作人員'))));
-    final staffGrid = centerGrid(context, makeStaffGrid());
 
     // --
 
@@ -77,7 +77,7 @@ class _AboutPageState extends State<AboutPage> {
                 coTitle,
                 centerGrid(context, makeCoOrganizersGrid(state)),
                 staffTitle,
-                staffGrid,
+                centerGrid(context, makeStaffGrid(state)),
                 SliverToBoxAdapter(
                     child:
                         SizedBox(height: MediaQuery.of(context).padding.top)),
@@ -183,48 +183,54 @@ class _AboutPageState extends State<AboutPage> {
     return [SliverToBoxAdapter(child: Container())];
   }
 
-  makeStaffGrid() {
-    final data = staffData();
-    return SliverGrid(
-      delegate: SliverChildBuilderDelegate((context, index) {
-        final item = data[index];
-        return LayoutBuilder(builder: (context, constraints) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              ClipOval(
-                child: Container(
-                  width: constraints.maxWidth,
-                  height: constraints.maxWidth,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(image: AssetImage(item[1]))),
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () {
-                        var link = item[3];
-                        if (link != null) launch(link, forceSafariVC: false);
-                      },
-                    ),
-                  ),
+  makeStaffGrid(DataBlocState state) {
+    if (state is DataBlocLoadingState) {
+      return [
+        SliverPadding(
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            sliver: SliverToBoxAdapter(child: CupertinoActivityIndicator()))
+      ];
+    }
+    if (state is DataBlocErrorState) {
+      return [
+        SliverPadding(
+            padding: const EdgeInsets.only(left: 20, right: 20),
+            sliver: SliverToBoxAdapter(child: Text('資料載入失敗')))
+      ];
+    }
+
+    if (state is DataBlocLoadedState) {
+      return SliverGrid(
+        delegate: SliverChildBuilderDelegate((context, index) {
+          final item = state.staffs[index];
+          return LayoutBuilder(builder: (context, constraints) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                ClipOval(
+                    child: CachedNetworkImage(
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  imageUrl: item.imageUrl ?? "",
+                  errorWidget: (context, url, error) =>
+                      Image(image: AssetImage("images/nopic.png")),
+                )),
+                SizedBox(height: 4),
+                Text(item.name, style: TextStyle(fontSize: 22.0)),
+                SizedBox(height: 4),
+                Text(
+                  item.description,
+                  textAlign: TextAlign.center,
                 ),
-              ),
-              SizedBox(height: 4),
-              Text(item[0], style: TextStyle(fontSize: 22.0)),
-              SizedBox(height: 4),
-              Text(
-                item[2],
-                textAlign: TextAlign.center,
-              ),
-            ],
-          );
-        });
-      }, childCount: data.length),
-      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 200.0,
-          childAspectRatio: 0.5,
-          crossAxisSpacing: 10.0),
-    );
+              ],
+            );
+          });
+        }, childCount: state.staffs.length),
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 200.0,
+            childAspectRatio: 0.5,
+            crossAxisSpacing: 10.0),
+      );
+    }
   }
 
   Widget makeVenue() {
@@ -232,16 +238,17 @@ class _AboutPageState extends State<AboutPage> {
       _AboutSectionTitle(text: 'Venue 場地'),
       center(Row(
         children: <Widget>[
-          Text('國立臺灣大學博雅教學館'),
+          Text('張榮發基金會 國際會議中心'),
           CupertinoButton(
-            child: Text('地圖 >'),
+            child: Text('[ 地圖 ]'),
             onPressed: () {
-              var url = 'https://tinyurl.com/y4h9ja9y';
+              var url = 'https://goo.gl/maps/umbd6vS92QWqSQXq8';
               launch(url, forceSafariVC: false);
             },
           )
         ],
       )),
+      Text('台北市中正區中山南路11號'),
     ];
     final venueSection =
         SliverList(delegate: SliverChildListDelegate(venueWidgets));

@@ -100,7 +100,7 @@ class _SessionsPageState extends State<SessionsPage> {
 
           widgets.addAll([
             CupertinoSliverNavigationBar(
-              largeTitle: Text("第 ${widget.day} 天 - 09/2${widget.day}"),
+              largeTitle: Text("議程 11/08"),
             ),
             CupertinoSliverRefreshControl(
               refreshTriggerPullDistance: 180,

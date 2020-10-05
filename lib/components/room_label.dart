@@ -14,13 +14,13 @@ class RoomLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     Color color = () {
       switch (session.roomName) {
-        case '101':
+        case '801':
           return Colors.red;
-        case '102':
+        case '803':
           return Colors.blue;
-        case '103':
+        case '1002':
           return Colors.green;
-        case '201':
+        case '1005':
           return Colors.orange;
         default:
           return Colors.black;
