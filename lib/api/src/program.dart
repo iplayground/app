@@ -62,11 +62,3 @@ class Program {
   }
 }
 
-/// Fetches programs.
-Future<List<Program>> fetchPrograms() async {
-  final response = await http.get(
-      'https://raw.githubusercontent.com/iplayground/SessionData/2020/v1/program.json');
-  final map = json.decode(response.body);
-  List list = map['program'];
-  return List.from(list.cast<Map>().map((x) => (Program(x))));
-}

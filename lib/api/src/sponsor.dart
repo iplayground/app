@@ -77,11 +77,3 @@ class Sponsors {
     return map;
   }
 }
-
-/// Fetches sponsors and partners.
-Future<Sponsors> fetchSponsors() async {
-  final response = await http.get(
-      'https://raw.githubusercontent.com/iplayground/SessionData/2020/v1/sponsors.json');
-  final map = json.decode(response.body);
-  return Sponsors(map);
-}
