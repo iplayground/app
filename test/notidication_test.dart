@@ -1,3 +1,4 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:iplayground19/bloc/notification.dart';
@@ -20,31 +21,40 @@ void main() {
     });
   });
 
-  test("test notification bloc", () async {
-    // ignore: close_sinks
-    NotificationBloc bloc = NotificationBloc(dataBloc: null);
+  blocTest('Test notification bloc', build: () {
+    return NotificationBloc(dataBloc: null);
+  }, act: (bloc) {
     bloc.add(NotificationBlocLoadEvent());
-    expectLater(
-        bloc.asBroadcastStream(),
-        emitsInOrder([
-          TypeMatcher<NotificationBlocLoadedState>(),
-        ]));
-  });
+  }, expect: [
+    TypeMatcher<NotificationBlocLoadedState>(),
+  ]);
 
-  test("test notification bloc", () async {
-    NotificationBloc bloc = NotificationBloc(dataBloc: null);
+  // test("test notification bloc", () async {
+  //   NotificationBloc bloc = NotificationBloc(dataBloc: null);
+  //   bloc.add(NotificationBlocLoadEvent());
+  //   bloc.add(NotificationBlocAddEvent('123'));
+  //   bloc.add(NotificationBlocRemoveEvent('123'));
+  //   await expectLater(
+  //       bloc.asBroadcastStream(),
+  //       emitsInOrder([
+  //         TypeMatcher<NotificationBlocLoadedState>(),
+  //         TypeMatcher<NotificationBlocLoadedState>(),
+  //         TypeMatcher<NotificationBlocLoadedState>(),
+  //       ]));
+  //   expect(log[0].arguments['value'][0] == '123', isTrue);
+  //   expect(log[1].arguments['value'].isEmpty, isTrue);
+  //   bloc.close();
+  // });
+
+  blocTest('Test notification bloc', build: () {
+    return NotificationBloc(dataBloc: null);
+  }, act: (bloc) {
     bloc.add(NotificationBlocLoadEvent());
     bloc.add(NotificationBlocAddEvent('123'));
     bloc.add(NotificationBlocRemoveEvent('123'));
-    await expectLater(
-        bloc.asBroadcastStream(),
-        emitsInOrder([
-          TypeMatcher<NotificationBlocLoadedState>(),
-          TypeMatcher<NotificationBlocLoadedState>(),
-          TypeMatcher<NotificationBlocLoadedState>(),
-        ]));
-    expect(log[0].arguments['value'][0] == '123', isTrue);
-    expect(log[1].arguments['value'].isEmpty, isTrue);
-    bloc.close();
-  });
+  }, expect: [
+    TypeMatcher<NotificationBlocLoadedState>(),
+    TypeMatcher<NotificationBlocLoadedState>(),
+    TypeMatcher<NotificationBlocLoadedState>(),
+  ]);
 }
