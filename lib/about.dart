@@ -307,22 +307,32 @@ class _SponsorGrid extends StatelessWidget {
     return SliverGrid(
       delegate: SliverChildBuilderDelegate((context, index) {
         final sponsor = sponsors[index];
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: <Widget>[
-              LayoutBuilder(builder: (context, constraints) {
-                return Container(
-                  width: constraints.maxWidth,
-                  height: constraints.maxWidth,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: NetworkImage(sponsor.imageUrl))),
-                );
-              }),
-              SizedBox(height: 10),
-              Text(sponsor.name),
-            ],
+        return Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () {
+              if (sponsor.link != null) {
+                launch(sponsor.link, forceSafariVC: false);
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: <Widget>[
+                  LayoutBuilder(builder: (context, constraints) {
+                    return Container(
+                      width: constraints.maxWidth,
+                      height: constraints.maxWidth,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: NetworkImage(sponsor.imageUrl))),
+                    );
+                  }),
+                  SizedBox(height: 10),
+                  Text(sponsor.name),
+                ],
+              ),
+            ),
           ),
         );
       }, childCount: (sponsors != null) ? sponsors.length : 0),

@@ -1,22 +1,21 @@
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
-
 class Sponsor {
   String name;
   String imageUrl;
   String description;
+  String link;
 
   Sponsor(Map map) {
     name = map['name'];
     imageUrl = map['picture'];
     description = map['desc'];
+    link = map['link'];
   }
 
   Map toJson() => {
         'name': name,
         'picture': imageUrl,
         'desc': description,
+        'link': link,
       };
 }
 
