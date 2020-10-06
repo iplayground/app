@@ -27,7 +27,6 @@ void main() {
     expectLater(
         bloc.asBroadcastStream(),
         emitsInOrder([
-          TypeMatcher<NotificationBlocInitialState>(),
           TypeMatcher<NotificationBlocLoadedState>(),
         ]));
   });
@@ -40,7 +39,6 @@ void main() {
     await expectLater(
         bloc.asBroadcastStream(),
         emitsInOrder([
-          TypeMatcher<NotificationBlocInitialState>(),
           TypeMatcher<NotificationBlocLoadedState>(),
           TypeMatcher<NotificationBlocLoadedState>(),
           TypeMatcher<NotificationBlocLoadedState>(),

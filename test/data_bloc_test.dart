@@ -1,8 +1,14 @@
+import 'package:bloc_test/bloc_test.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:iplayground19/api/api.dart';
 import 'package:iplayground19/bloc/data_bloc.dart';
 import 'package:matcher/matcher.dart';
+import 'package:mockito/mockito.dart';
+
+import 'mock_api_repository.dart';
+
+class MockCacheRepository extends Mock implements CacheRepository {}
 
 class DataBlocLoadedStateMatcher extends CustomMatcher {
   DataBlocLoadedStateMatcher(matcher)
@@ -40,6 +46,9 @@ class DataBlocLoadedStateMatcher extends CustomMatcher {
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+
+  APIRepository mockApiRepository;
+  CacheRepository mockCacheRepository;
   setUp(() {
     final channel = MethodChannel('plugins.flutter.io/shared_preferences');
     channel.setMockMethodCallHandler((call) async {
@@ -48,18 +57,18 @@ void main() {
       }
       return null;
     });
+
+    mockApiRepository = MockAPIRepository.presetMockRepository();
+    mockCacheRepository = MockCacheRepository();
   });
 
-  test("Test Bloc", () async {
-    final bloc = DataBloc();
+  blocTest('Test Bloc', build: () {
+    return DataBloc(
+        apiRepository: mockApiRepository, cacheRepository: mockCacheRepository);
+  }, act: (bloc) {
     bloc.add(DataBlocEvent.load);
-    await expectLater(
-        bloc.asBroadcastStream(),
-        emitsInOrder([
-          TypeMatcher<DataBlocInitialState>(),
-          TypeMatcher<DataBlocLoadingState>(),
-//          DataBlocLoadedStateMatcher(isTrue),
-        ]));
-    await bloc.close();
-  });
+  }, expect: [
+    TypeMatcher<DataBlocLoadingState>(),
+    DataBlocLoadedStateMatcher(isTrue),
+  ]);
 }
