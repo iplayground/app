@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<NotificationBloc>(create: (context) => notificationBloc),
       ],
       child: CupertinoApp(
-        title: 'iPlayground 19',
+        title: 'iPlayground 20',
         theme: CupertinoThemeData(
           brightness: Brightness.light,
           primaryColor: Color.fromRGBO(80, 121, 255, 1.0),

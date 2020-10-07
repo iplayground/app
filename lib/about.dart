@@ -103,7 +103,7 @@ class _AboutPageState extends State<AboutPage> {
       center(Text(
           '2018年10月，有實戰技巧、初心者攻略、hard core 議題以及各式八卦政治學的 iPlaygrouond 華麗登場。')),
       SizedBox(height: 5),
-      center(Text('2019年，iPlayground 誠摯召喚各位鍵盤好手一起來燃燒熱血，讓議程更多元、更有料！'))
+      center(Text('在這裡，iPlayground 誠摯召喚各位鍵盤好手一起來燃燒熱血，讓議程更多元、更有料！'))
     ];
     final aboutSection =
         SliverList(delegate: SliverChildListDelegate(aboutWidgets));
