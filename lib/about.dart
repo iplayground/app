@@ -262,7 +262,7 @@ class _AboutPageState extends State<AboutPage> {
           )
         ],
       )),
-      Text('台北市中正區中山南路11號'),
+      center(Text('台北市中正區中山南路11號')),
     ];
     final venueSection =
         SliverList(delegate: SliverChildListDelegate(venueWidgets));
