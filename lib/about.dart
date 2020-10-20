@@ -309,42 +309,53 @@ class _SponsorGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverGrid(
-      delegate: SliverChildBuilderDelegate((context, index) {
-        final sponsor = sponsors[index];
-        return Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onTap: () {
-              if (sponsor.link != null) {
-                launch(sponsor.link, forceSafariVC: false);
-              }
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: <Widget>[
-                  LayoutBuilder(builder: (context, constraints) {
-                    return Container(
-                      width: constraints.maxWidth,
-                      height: constraints.maxWidth,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: NetworkImage(sponsor.imageUrl))),
-                    );
-                  }),
-                  SizedBox(height: 10),
-                  Text(sponsor.name),
-                ],
-              ),
-            ),
+    if (sponsors.length == 1) {
+      return SliverPadding(
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          sliver: SliverToBoxAdapter(
+              child: center(_sponsorCell(sponsor: sponsors[0]))));
+    } else {
+      return SliverGrid(
+        delegate: SliverChildBuilderDelegate((context, index) {
+          final sponsor = sponsors[index];
+          return _sponsorCell(sponsor: sponsor);
+        }, childCount: (sponsors != null) ? sponsors.length : 0),
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 200.0,
+          crossAxisSpacing: 10.0,
+          childAspectRatio: 0.7,
+        ),
+      );
+    }
+  }
+
+  Widget _sponsorCell({Sponsor sponsor}) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          if (sponsor.link != null) {
+            launch(sponsor.link, forceSafariVC: false);
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: <Widget>[
+              LayoutBuilder(builder: (context, constraints) {
+                return Container(
+                  width: constraints.maxWidth,
+                  height: constraints.maxWidth,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: NetworkImage(sponsor.imageUrl))),
+                );
+              }),
+              SizedBox(height: 10),
+              Text(sponsor.name),
+            ],
           ),
-        );
-      }, childCount: (sponsors != null) ? sponsors.length : 0),
-      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 200.0,
-        crossAxisSpacing: 10.0,
-        childAspectRatio: 0.7,
+        ),
       ),
     );
   }
