@@ -250,6 +250,7 @@ class _AboutPageState extends State<AboutPage> {
             ))
       ];
     }
+    return [];
   }
 
   Widget makeVenue() {

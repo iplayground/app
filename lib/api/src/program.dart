@@ -1,6 +1,4 @@
-import 'dart:convert';
 
-import 'package:http/http.dart' as http;
 
 /// Represents speakers.
 class Speaker {

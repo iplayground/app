@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class Staff {
   String name;
   String imageUrl;
@@ -20,4 +18,3 @@ class Staff {
         'SNS': linkUrl,
       };
 }
-
