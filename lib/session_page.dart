@@ -149,7 +149,7 @@ class _SessionPageState extends State<SessionPage> {
                   .textTheme
                   .textStyle
                   .copyWith(fontSize: 17)),
-          onTapLink: (link) => launch(
+          onTapLink: (text, link, title) => launch(
             link,
             forceSafariVC: false,
           ),
@@ -211,7 +211,7 @@ class _SessionPageState extends State<SessionPage> {
                           .textTheme
                           .textStyle
                           .copyWith(fontSize: 17)),
-              onTapLink: (link) => launch(link),
+              onTapLink: (text, link, title) => launch(link),
             ),
           )
         ]);
