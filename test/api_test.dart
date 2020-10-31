@@ -1,14 +1,26 @@
+import 'dart:convert';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:iplayground19/api/api.dart';
+import 'package:iplayground19/api/src/staff.dart';
+import 'package:mockito/mockito.dart';
+import 'mock_api_repository.dart';
+
 
 main() async {
+  APIRepository mockApiRepository;
+
+  setUp(() {
+    mockApiRepository = MockAPIRepository.presetMockRepository();
+  });
+
   test("Test Sponsor", () async {
-    var sponsors = await fetchSponsors();
+    var sponsors = await mockApiRepository.fetchSponsors();
     expect(sponsors.sections.length > 0, isTrue);
   });
 
   test("Test Program", () async {
-    var programs = await fetchPrograms();
+    var programs = await mockApiRepository.fetchPrograms();
     expect(programs.isNotEmpty, isTrue);
     for (Program program in programs) {
       expect(program.title.isNotEmpty, isTrue);
@@ -19,7 +31,7 @@ main() async {
   });
 
   test("Test Sessions", () async {
-    var sessions = await fetchSessions();
+    var sessions = await mockApiRepository.fetchSessions();
     expect(sessions.isNotEmpty, isTrue);
     for (Session session in sessions) {
       expect(session.title.isNotEmpty, isTrue);

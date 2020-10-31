@@ -74,7 +74,6 @@ class _SessionPageState extends State<SessionPage> {
     var widgets = <Widget>[
       SizedBox(height: MediaQuery.of(context).padding.top),
       SizedBox(height: 70),
-      SizedBox(height: 20),
       Padding(
         padding:
             const EdgeInsets.only(left: 20, top: 8, bottom: 8.0, right: 8.0),
@@ -108,7 +107,6 @@ class _SessionPageState extends State<SessionPage> {
           ],
         ),
       ),
-      SizedBox(height: 20),
     ];
     final metadata = [
       SizedBox(height: 5),

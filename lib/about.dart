@@ -79,12 +79,13 @@ class _AboutPageState extends State<AboutPage> {
                 coTitle,
                 centerGrid(context, makeCoOrganizersGrid(state)),
                 staffTitle,
-                centerGrid(context, makeStaffGrid(state)),
+              ]);
+              slivers.addAll(makeStaffGrid(state));
+              slivers.add(
                 SliverToBoxAdapter(
                     child:
                         SizedBox(height: MediaQuery.of(context).padding.top)),
-              ]);
-
+              );
               return CustomScrollView(
                 slivers: slivers,
                 controller: widget.scrollController,
@@ -103,7 +104,7 @@ class _AboutPageState extends State<AboutPage> {
       center(Text(
           '2018年10月，有實戰技巧、初心者攻略、hard core 議題以及各式八卦政治學的 iPlaygrouond 華麗登場。')),
       SizedBox(height: 5),
-      center(Text('2019年，iPlayground 誠摯召喚各位鍵盤好手一起來燃燒熱血，讓議程更多元、更有料！'))
+      center(Text('在這裡，iPlayground 誠摯召喚各位鍵盤好手一起來燃燒熱血，讓議程更多元、更有料！'))
     ];
     final aboutSection =
         SliverList(delegate: SliverChildListDelegate(aboutWidgets));
@@ -185,7 +186,7 @@ class _AboutPageState extends State<AboutPage> {
     return [SliverToBoxAdapter(child: Container())];
   }
 
-  makeStaffGrid(DataBlocState state) {
+  List<Widget> makeStaffGrid(DataBlocState state) {
     if (state is DataBlocLoadingState) {
       return [
         SliverPadding(
@@ -202,48 +203,52 @@ class _AboutPageState extends State<AboutPage> {
     }
 
     if (state is DataBlocLoadedState) {
-      return SliverGrid(
-        delegate: SliverChildBuilderDelegate((context, index) {
-          final item = state.staffs[index];
-          return LayoutBuilder(builder: (context, constraints) {
-            return Material(
-              color: Colors.transparent,
-              child: InkWell(
-                onTap: () {
-                  if (item.linkUrl != null) {
-                    launch(item.linkUrl, forceSafariVC: false);
-                  }
-                },
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    ClipOval(
-                        child: CachedNetworkImage(
-                      cacheManager: new MyCacheManager(),
-                      placeholder: (context, url) =>
-                          CircularProgressIndicator(),
-                      imageUrl: item.imageUrl ?? "",
-                      errorWidget: (context, url, error) =>
-                          Image(image: AssetImage("images/nopic.png")),
-                    )),
-                    SizedBox(height: 4),
-                    Text(item.name, style: TextStyle(fontSize: 22.0)),
-                    SizedBox(height: 4),
-                    Text(
-                      item.description,
-                      textAlign: TextAlign.center,
+      return [
+        centerGrid(
+            context,
+            SliverGrid(
+              delegate: SliverChildBuilderDelegate((context, index) {
+                final item = state.staffs[index];
+                return LayoutBuilder(builder: (context, constraints) {
+                  return Material(
+                    color: Colors.transparent,
+                    child: InkWell(
+                      onTap: () {
+                        if (item.linkUrl != null) {
+                          launch(item.linkUrl, forceSafariVC: false);
+                        }
+                      },
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          ClipOval(
+                              child: CachedNetworkImage(
+                            cacheManager: new MyCacheManager(),
+                            placeholder: (context, url) =>
+                                CircularProgressIndicator(),
+                            imageUrl: item.imageUrl ?? "",
+                            errorWidget: (context, url, error) =>
+                                Image(image: AssetImage("images/nopic.png")),
+                          )),
+                          SizedBox(height: 4),
+                          Text(item.name, style: TextStyle(fontSize: 22.0)),
+                          SizedBox(height: 4),
+                          Text(
+                            item.description,
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
-            );
-          });
-        }, childCount: (state.staffs != null) ? state.staffs.length : 0),
-        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 200.0,
-            childAspectRatio: 0.5,
-            crossAxisSpacing: 10.0),
-      );
+                  );
+                });
+              }, childCount: (state.staffs != null) ? state.staffs.length : 0),
+              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 200.0,
+                  childAspectRatio: 0.5,
+                  crossAxisSpacing: 10.0),
+            ))
+      ];
     }
   }
 
@@ -262,7 +267,7 @@ class _AboutPageState extends State<AboutPage> {
           )
         ],
       )),
-      Text('台北市中正區中山南路11號'),
+      center(Text('台北市中正區中山南路11號')),
     ];
     final venueSection =
         SliverList(delegate: SliverChildListDelegate(venueWidgets));
@@ -304,10 +309,36 @@ class _SponsorGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SliverGrid(
-      delegate: SliverChildBuilderDelegate((context, index) {
-        final sponsor = sponsors[index];
-        return Padding(
+    if (sponsors.length == 1) {
+      return SliverPadding(
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          sliver: SliverToBoxAdapter(
+              child: center(_sponsorCell(sponsor: sponsors[0]))));
+    } else {
+      return SliverGrid(
+        delegate: SliverChildBuilderDelegate((context, index) {
+          final sponsor = sponsors[index];
+          return _sponsorCell(sponsor: sponsor);
+        }, childCount: (sponsors != null) ? sponsors.length : 0),
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 200.0,
+          crossAxisSpacing: 10.0,
+          childAspectRatio: 0.7,
+        ),
+      );
+    }
+  }
+
+  Widget _sponsorCell({Sponsor sponsor}) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () {
+          if (sponsor.link != null) {
+            launch(sponsor.link, forceSafariVC: false);
+          }
+        },
+        child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: <Widget>[
@@ -324,12 +355,7 @@ class _SponsorGrid extends StatelessWidget {
               Text(sponsor.name),
             ],
           ),
-        );
-      }, childCount: (sponsors != null) ? sponsors.length : 0),
-      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-        maxCrossAxisExtent: 200.0,
-        crossAxisSpacing: 10.0,
-        childAspectRatio: 0.7,
+        ),
       ),
     );
   }

@@ -118,9 +118,11 @@ class Section {
 }
 
 class DataBloc extends Bloc<DataBlocEvent, DataBlocState> {
-  CacheRepository cacheRepo = CacheRepository();
+  final APIRepository apiRepository;
+  final CacheRepository cacheRepository;
 
-  DataBloc() : super(DataBlocInitialState());
+  DataBloc({@required this.apiRepository, @required this.cacheRepository})
+      : super(DataBlocInitialState());
 
   @override
   Stream<DataBlocState> mapEventToState(DataBlocEvent event) async* {
@@ -135,7 +137,7 @@ class DataBloc extends Bloc<DataBlocEvent, DataBlocState> {
 
     try {
       if (event == DataBlocEvent.load) {
-        Cache cache = await cacheRepo.load();
+        Cache cache = await cacheRepository.load();
         if (cache != null) {
           final sponsors = cache.sponsors;
           final programs = cache.programs;
@@ -152,16 +154,16 @@ class DataBloc extends Bloc<DataBlocEvent, DataBlocState> {
 
       yield DataBlocLoadingState();
 
-      final sponsors = await fetchSponsors();
-      final staffs = await fetchStaffs();
-      final programs = await fetchPrograms();
-      final sessions = await fetchSessions();
+      final sponsors = await apiRepository.fetchSponsors();
+      final staffs = await apiRepository.fetchStaffs();
+      final programs = await apiRepository.fetchPrograms();
+      final sessions = await apiRepository.fetchSessions();
       yield generateState(
           sessions: sessions,
           programs: programs,
           sponsors: sponsors,
           staffs: staffs);
-      cacheRepo.save(Cache(
+      cacheRepository.save(Cache(
           sponsors: sponsors,
           programs: programs,
           sessions: sessions,

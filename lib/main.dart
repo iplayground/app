@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iplayground19/about.dart';
+import 'package:iplayground19/api/api.dart';
 import 'package:iplayground19/bloc/data_bloc.dart';
 import 'package:iplayground19/favorites_page.dart';
 import 'package:iplayground19/sessions_page.dart';
@@ -22,7 +23,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    dataBloc = DataBloc();
+    dataBloc = DataBloc(
+        apiRepository: APIRepository(), cacheRepository: CacheRepository());
     notificationBloc = NotificationBloc(dataBloc: dataBloc);
     notificationBloc.add(NotificationBlocLoadEvent());
   }
@@ -42,7 +44,8 @@ class _MyAppState extends State<MyApp> {
         BlocProvider<NotificationBloc>(create: (context) => notificationBloc),
       ],
       child: CupertinoApp(
-        title: 'iPlayground 19',
+        debugShowCheckedModeBanner: false,
+        title: 'iPlayground 20',
         theme: CupertinoThemeData(
           brightness: Brightness.light,
           primaryColor: Color.fromRGBO(80, 121, 255, 1.0),
