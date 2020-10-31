@@ -2,7 +2,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
-class MyCacheManager extends BaseCacheManager {
+class MyCacheManager extends CacheManager {
   static const key = "customCache";
 
   static MyCacheManager _instance;
@@ -20,14 +20,14 @@ class MyCacheManager extends BaseCacheManager {
   // link the custom handler to handle HTTP calls
   // via the custom cache manager
   MyCacheManager._()
-      : super(key,
-            maxAgeCacheObject: Duration(days: 1),
+      : super(Config(key,
+            stalePeriod: Duration(days: 1),
             maxNrOfCacheObjects: 60,
-            fileService: HttpFileService());
+            fileService: HttpFileService()));
 
-  @override
-  Future<String> getFilePath() async {
-    var directory = await getTemporaryDirectory();
-    return path.join(directory.path, key);
-  }
+//  @override
+//  Future<String> getFilePath() async {
+//    var directory = await getTemporaryDirectory();
+//    return path.join(directory.path, key);
+//  }
 }
