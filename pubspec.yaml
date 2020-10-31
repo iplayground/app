@@ -1,6 +1,6 @@
 name: iplayground19
 description: iPlayground 20
-version: 2.0.6+1
+version: 3.0.6+100
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
