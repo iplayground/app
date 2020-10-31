@@ -131,7 +131,7 @@ class _SessionPageState extends State<SessionPage> {
 
     widgets.addAll(title);
 
-    if (widget.program.reviewTags.contains('workshop')) {
+    if (widget.program?.reviewTags?.contains('workshop') == true) {
       widgets.add(Padding(
         padding: const EdgeInsets.only(left: 20, right: 20),
         child: Text('workshop'),
