@@ -152,7 +152,7 @@ class NotificationHelper {
     final hour = int.parse(components[0]);
     final minute = int.parse(components[1]);
 
-    DateTime dateTime = DateTime.utc(2020, 11, 8 + day, hour, minute);
+    DateTime dateTime = DateTime.utc(2020, 11, 8 + (day - 1), hour, minute);
     // Taiwan is at UTC + 8
     DateTime taiwanTime = dateTime.subtract(Duration(hours: 8));
     return taiwanTime.subtract(Duration(minutes: 10));
